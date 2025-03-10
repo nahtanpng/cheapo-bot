@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-from src.events.on_message import reward_every_ten_message
+from src.events.rewards import reward_every_ten_message
 
 
 def event_setup(bot: commands.Bot):
