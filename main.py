@@ -47,6 +47,7 @@ async def balance(ctx: commands.Context):
         await ctx.send(f'{ctx.author.name}, your balance is 0 coins. :coin:')
     conn.close()
 
+# Command: daily reward
 @bot.command()
 async def daily(ctx):
     user_id = ctx.author.id
