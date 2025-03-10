@@ -1,10 +1,9 @@
+import os
+import sqlite3
+
 import discord
 from discord.ext import commands
-import sqlite3
 from dotenv import load_dotenv
-from src.db.balance import update_balance, get_last_daily, set_last_daily
-from datetime import datetime, timedelta
-import os
 
 # Setting .env variables
 load_dotenv()
@@ -13,7 +12,8 @@ TOKEN = os.getenv('TOKEN')
 # Initialize bot
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="c!", intents=intents)
+
 
 # Database setup
 def init_db():
@@ -26,43 +26,17 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 @bot.event
 async def on_ready():
+    await bot.tree.sync()
     print(f'Logged in as {bot.user.name}')
     init_db()
 
-# Command: Check current balance
-@bot.command()
-async def balance(ctx: commands.Context):
-    user_id = ctx.author.id
-    conn = sqlite3.connect('economy.db')
-    c = conn.cursor()
-    c.execute('SELECT balance from users WHERE user_id = ?', (user_id,))
-    result = c.fetchone()
-    if result:
-        await ctx.send(f'{ctx.author.mention}, your balance is {result[0]} coins. :coin:')
-    else:
-        c.execute('INSERT INTO users (user_id, balance) VALUES (?, ?)', (user_id, 0))
-        conn.commit()
-        await ctx.send(f'{ctx.author.name}, your balance is 0 coins. :coin:')
-    conn.close()
 
-# Command: daily reward
-@bot.command()
-async def daily(ctx):
-    user_id = ctx.author.id
-    reward = 100
+# Slash Commands
+from src.commands.balance import setup
 
-    last_daily = get_last_daily(user_id)
-    if last_daily:
-        last_daily_date = datetime.fromisoformat(last_daily)
-        now = datetime.now()
-        if now - last_daily_date < timedelta(days=1):
-            await ctx.send(f'{ctx.author.mention}, you can only claim your daily reward **once per day!**')
-            return
-
-    update_balance(user_id, reward)
-    set_last_daily(user_id, datetime.now().isoformat())
-    await ctx.send(f'{ctx.author.mention}, you **claimed** your daily reward of {reward} coins! :moneybag:')
+setup(bot)
 
 bot.run(TOKEN)
