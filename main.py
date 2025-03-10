@@ -25,13 +25,13 @@ def init_db():
     c.execute('''CREATE TABLE IF NOT EXISTS users
                  (user_id INTEGER PRIMARY KEY, 
                   balance INTEGER DEFAULT 0, 
-                  last_daily TEXT)''')
+                  last_daily TEXT,
+                  message_counter INTEGER DEFAULT 0)''')
     conn.commit()
     conn.close()
 
 
 bot_statuses = cycle(["Use c!help 🎲", "You're up 🃏", "How about a game? 🎲"])
-
 
 @tasks.loop(seconds=5)
 async def change_bot_statuses():
@@ -47,9 +47,12 @@ async def on_ready():
     init_db()
 
 
+
 # Commands
 from src.commands.commands_setup import setup
+from src.events.events_setup import event_setup
 
 setup(bot)
+event_setup(bot)
 
 bot.run(TOKEN)

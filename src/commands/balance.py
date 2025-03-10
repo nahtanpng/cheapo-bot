@@ -34,7 +34,7 @@ async def balance_command(ctx: commands.Context):
     else:
         c.execute('INSERT INTO users (user_id, balance) VALUES (?, ?)', (user_id, 0))
         conn.commit()
-        await ctx.send(f'{ctx.author.name}, your balance is 0 coins. :coin:')
+        await ctx.send(f'{ctx.author.mention}, your balance is 0 coins. :coin:')
     conn.close()
 
 

@@ -30,3 +30,23 @@ def get_last_daily(user_id):
     result = c.fetchone()
     conn.close()
     return result[0] if result else None
+
+def add_reward_every_ten_message(user_id):
+    conn = sqlite3.connect('economy.db')
+    c = conn.cursor()
+
+    # Create the user, if it doesn't exist
+    c.execute('INSERT OR IGNORE INTO users (user_id, balance, message_counter) VALUES (?, 0, 0)', (user_id,))
+
+    # Increment the counter
+    c.execute('UPDATE users SET message_counter = message_counter + 1 WHERE user_id = ?', (user_id,))
+
+    #Check the counter value
+    c.execute('SELECT message_counter FROM users WHERE user_id = ?', (user_id,))
+    counter = c.fetchone()[0]
+
+    if counter == 10:
+        c.execute('UPDATE users SET balance = balance + 1, message_counter = 0 WHERE user_id = ?', (user_id,))
+
+    conn.commit()
+    conn.close()
