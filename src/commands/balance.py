@@ -23,7 +23,7 @@ async def balance_slash(interact: discord.Interaction):
     conn.close()
 
 
-async def balance(ctx: commands.Context):
+async def balance_command(ctx: commands.Context):
     user_id = ctx.author.id
     conn = sqlite3.connect('economy.db')
     c = conn.cursor()
@@ -74,9 +74,3 @@ async def daily(ctx):
     set_last_daily(user_id, datetime.now().isoformat())
     await ctx.send(f'{ctx.author.mention}, you **claimed** your daily reward of {reward} coins! :moneybag:')
 
-
-def setup(bot: commands.Bot):
-    bot.tree.command(name="balance", description="Check your coin balance. :coin:")(balance_slash)
-    bot.command()(balance)
-    bot.tree.command(name="daily", description="Reward your daily reward!")(daily_slash)
-    bot.command()(daily)

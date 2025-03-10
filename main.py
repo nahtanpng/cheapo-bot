@@ -6,6 +6,8 @@ import discord
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 
+from src.commands.help_command import CustomHelpCommand
+
 # Setting .env variables
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
@@ -13,7 +15,7 @@ TOKEN = os.getenv('TOKEN')
 # Initialize bot
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix="c!", intents=intents)
+bot = commands.Bot(command_prefix="c!", intents=intents, help_command=CustomHelpCommand())
 
 
 # Database setup
@@ -27,11 +29,14 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 bot_statuses = cycle(["Use c!help 🎲", "You're up 🃏", "How about a game? 🎲"])
+
 
 @tasks.loop(seconds=5)
 async def change_bot_statuses():
     await bot.change_presence(activity=discord.CustomActivity(next(bot_statuses)))
+
 
 @bot.event
 async def on_ready():
@@ -42,8 +47,8 @@ async def on_ready():
     init_db()
 
 
-# Slash Commands
-from src.commands.balance import setup
+# Commands
+from src.commands.commands_setup import setup
 
 setup(bot)
 
