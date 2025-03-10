@@ -1,8 +1,9 @@
 import os
 import sqlite3
+from itertools import cycle
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from dotenv import load_dotenv
 
 # Setting .env variables
@@ -26,10 +27,17 @@ def init_db():
     conn.commit()
     conn.close()
 
+bot_statuses = cycle(["Use c!help 🎲", "You're up 🃏", "How about a game? 🎲"])
+
+@tasks.loop(seconds=5)
+async def change_bot_statuses():
+    await bot.change_presence(activity=discord.CustomActivity(next(bot_statuses)))
 
 @bot.event
 async def on_ready():
     await bot.tree.sync()
+    change_bot_statuses.start()
+    await bot.change_presence(activity=discord.CustomActivity("Use c!help 🎲"))
     print(f'Logged in as {bot.user.name}')
     init_db()
 
