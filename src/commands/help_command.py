@@ -7,7 +7,7 @@ class CustomHelpCommand(commands.HelpCommand):
         super().__init__()
 
     async def send_bot_help(self, mapping):
-        help_embed = discord.Embed(title="Cheapo Commands", color=discord.Color.blue())
+        help_embed = discord.Embed(title="Cheapo Commands", color=discord.Color.yellow())
         help_embed.description = """
 💰 **Economy Commands**:
 - `c!balance` - Check your coin balance.
