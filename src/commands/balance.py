@@ -8,7 +8,7 @@ from src.db.balance import update_balance, get_last_daily, set_last_daily
 
 
 # Command: Check current balance
-async def balanceSlash(interact: discord.Interaction):
+async def balance_slash(interact: discord.Interaction):
     user_id = interact.user.id
     conn = sqlite3.connect('economy.db')
     c = conn.cursor()
@@ -39,7 +39,7 @@ async def balance(ctx: commands.Context):
 
 
 # Command: daily reward
-async def dailySlash(interact: discord.Interaction):
+async def daily_slash(interact: discord.Interaction):
     user_id = interact.user.id
     reward = 100
 
@@ -76,7 +76,7 @@ async def daily(ctx):
 
 
 def setup(bot: commands.Bot):
-    bot.tree.command(name="balance", description="Check your coin balance. :coin:")(balanceSlash)
+    bot.tree.command(name="balance", description="Check your coin balance. :coin:")(balance_slash)
     bot.command()(balance)
-    bot.tree.command(name="daily", description="Reward your daily reward!")(dailySlash)
+    bot.tree.command(name="daily", description="Reward your daily reward!")(daily_slash)
     bot.command()(daily)
