@@ -16,6 +16,23 @@ def update_balance(user_id, amount):
     conn.commit()
     conn.close()
 
+def verify_balance(user_id, value):
+    conn = sqlite3.connect('economy.db')
+    c = conn.cursor()
+    c.execute('INSERT OR IGNORE INTO users (user_id, balance) VALUES (?, ?)', (user_id, 0))
+    c.execute('SELECT balance FROM users WHERE user_id = ?', (user_id,))
+    result = c.fetchone()
+    conn.close()
+
+    if result is None:
+        return False, 0
+
+    balance = result[0]
+    if balance < value:
+        return False, balance
+    else:
+        return True, balance
+
 def set_last_daily(user_id, date):
     conn = sqlite3.connect('economy.db')
     c = conn.cursor()

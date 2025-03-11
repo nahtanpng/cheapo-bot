@@ -24,7 +24,7 @@ def init_db():
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS users
                  (user_id INTEGER PRIMARY KEY, 
-                  balance INTEGER DEFAULT 0, 
+                  balance DECIMAL DEFAULT 0, 
                   last_daily TEXT,
                   message_counter INTEGER DEFAULT 0)''')
     conn.commit()

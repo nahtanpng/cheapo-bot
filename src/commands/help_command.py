@@ -9,13 +9,16 @@ class CustomHelpCommand(commands.HelpCommand):
     async def send_bot_help(self, mapping):
         help_embed = discord.Embed(title="Cheapo Commands", color=discord.Color.yellow())
 
-        image = discord.File("src/assets/bot_icon.png", "bot_icon.png")
+        image = discord.File("src/assets/images/bot_icon.png", "bot_icon.png")
         help_embed.set_thumbnail(url="attachment://bot_icon.png")
 
         help_embed.description = """
 💰 **Economy Commands**:
-- `c!balance` - Check your coin balance.
-- `c!daily` - Claim your daily reward (once per day).
+- `c!balance` - Peek at your coin stash. How much dough you got, hotshot?
+- `c!daily` - Grab your daily moolah! But don’t get greedy—once a day, see?
+
+🎲 **Gambling Commands**:
+- `c!flip <side> <amount> ` -  Flip a coin and bet your bottom dollar. Heads or tails, baby!
         """
 
         # Send the embed
