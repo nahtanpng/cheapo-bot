@@ -33,6 +33,7 @@ def init_db():
 
 bot_statuses = cycle(["Use c!help 🎲", "You're up 🃏", "How about a game? 🎲"])
 
+
 @tasks.loop(seconds=5)
 async def change_bot_statuses():
     await bot.change_presence(activity=discord.CustomActivity(next(bot_statuses)))
@@ -47,12 +48,14 @@ async def on_ready():
     init_db()
 
 
-
 # Commands
-from src.commands.commands_setup import setup
-from src.events.events_setup import event_setup
+from src.commands.commands_setup import commands_setup
 
-setup(bot)
-event_setup(bot)
+commands_setup(bot)
+
+# Events
+from src.events.events_setup import events_setup
+
+events_setup(bot)
 
 bot.run(TOKEN)
