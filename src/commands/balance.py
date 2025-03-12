@@ -5,6 +5,8 @@ import discord
 from discord.ext import commands
 
 from src.db.balance import update_balance, get_last_daily, set_last_daily
+from src.messages.en.balance_messages import balance_embed_message, balance_embed_empty_message, daily_reward_message, \
+    daily_not_reward_message
 
 
 # Command: Check current balance
@@ -15,22 +17,12 @@ async def balance_slash(interact: discord.Interaction):
     c.execute('SELECT balance from users WHERE user_id = ?', (user_id,))
     result = c.fetchone()
     if result:
-        embed = discord.Embed(
-            title="💰 Your Balance 💰",
-            description=f"**{interact.user.mention}, you’ve got a shiny pile of {result[0]} coins!** :coin:",
-            color=0xFFD700  # Gold color
-        )
-        embed.set_footer(text="Keep stackin’ that dough, big shot—you’re on a roll! 🤑")
+        embed = balance_embed_message(interact.user.mention, result)
         await interact.response.send_message(embed=embed)
     else:
         c.execute('INSERT INTO users (user_id, balance) VALUES (?, ?)', (user_id, 0))
         conn.commit()
-        embed = discord.Embed(
-            title="💔 Your Balance 💔",
-            description=f"**{interact.user.mention}, your pockets are empty... 0 coins to your name!** :coin:",
-            color=0xFF0000  # Red color
-        )
-        embed.set_footer(text="Time to get to work, kiddo—those coins won’t earn themselves! 😅")
+        embed = balance_embed_empty_message(interact.user.mention)
         await interact.response.send_message(embed=embed)
     conn.close()
 
@@ -42,22 +34,12 @@ async def balance_command(ctx: commands.Context):
     c.execute('SELECT balance from users WHERE user_id = ?', (user_id,))
     result = c.fetchone()
     if result:
-        embed = discord.Embed(
-            title="💰 Your Balance 💰",
-            description=f"**{ctx.author.mention}, you’ve got a shiny pile of {result[0]} coins!** :coin:",
-            color=0xFFD700  # Gold color
-        )
-        embed.set_footer(text="Keep stackin’ that dough, big shot—you’re on a roll! 🤑")
+        embed = balance_embed_message(ctx.author.mention, result)
         await ctx.send(embed=embed)
     else:
         c.execute('INSERT INTO users (user_id, balance) VALUES (?, ?)', (user_id, 0))
         conn.commit()
-        embed = discord.Embed(
-            title="💔 Your Balance 💔",
-            description=f"**{ctx.author.mention}, your pockets are empty... 0 coins to your name!** :coin:",
-            color=0xFF0000  # Red color
-        )
-        embed.set_footer(text="Time to get to work, kiddo—those coins won’t earn themselves! 😅")
+        embed = balance_embed_empty_message(ctx.author.mention)
         await ctx.send(embed=embed)
     conn.close()
 
@@ -72,14 +54,17 @@ async def daily_slash(interact: discord.Interaction):
         last_daily_date = datetime.fromisoformat(last_daily)
         now = datetime.now()
         if now - last_daily_date < timedelta(days=1):
-            await interact.response.send_message(
-                f'{interact.user.mention}, you can only claim your daily reward **once per day!**')
+            embed = daily_not_reward_message(interact.user.mention)
+            await interact.response.send_message(embed=embed)
+            await interact.message.add_reaction("⏰")
             return
 
     update_balance(user_id, reward)
     set_last_daily(user_id, datetime.now().isoformat())
-    await interact.response.send_message(
-        f'{interact.user.mention}, you **claimed** your daily reward of {reward} coins! :moneybag:')
+
+    embed = daily_reward_message(interact.user.mention, reward)
+    await interact.response.send_message(embe=embed)
+    await interact.message.add_reaction("🎉")
 
 
 async def daily(ctx):
@@ -91,23 +76,14 @@ async def daily(ctx):
         last_daily_date = datetime.fromisoformat(last_daily)
         now = datetime.now()
         if now - last_daily_date < timedelta(days=1):
-            embed = discord.Embed(
-                title="⏰ Daily Cooldown ⏰",
-                description=f"**{ctx.author.mention}, you’ve already claimed your daily reward today!**\n\n*Patience is a virtue, kiddo—come back tomorrow for more shiny coins!* 💰",
-                color=0xFFA500  # Orange color
-            )
+            embed = daily_not_reward_message(ctx.author.mention)
             await ctx.send(embed=embed)
             await ctx.message.add_reaction("⏰")
             return
 
     update_balance(user_id, reward)
     set_last_daily(user_id, datetime.now().isoformat())
-    embed = discord.Embed(
-        title="🎉 Daily Reward Claimed! 🎉",
-        description=f"**{ctx.author.mention}, you just claimed your daily reward of {reward} coins!** :moneybag:\n\n*Keep stackin’ that dough, big shot—you’re on a roll!* 🤑",
-        color=0xFFD700  # Gold color
-    )
+
+    embed = daily_reward_message(ctx.author.mention, reward)
     await ctx.send(embed=embed)
     await ctx.message.add_reaction("🎉")
-
-
