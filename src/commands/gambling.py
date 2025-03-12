@@ -1,10 +1,10 @@
 import random
 
-import discord
 from discord.ext import commands
 
 from src.db.balance import verify_balance
 from src.db.gambling import flip_reward
+from src.messages.en.gambling_messages import user_can_not_pay, flip_reward_message, flip_loss_message
 
 
 async def flip(ctx: commands.Context, side: str, value: int):
@@ -13,14 +13,7 @@ async def flip(ctx: commands.Context, side: str, value: int):
     user_can_pay, user_balance = verify_balance(user_id, value)
 
     if not user_can_pay:
-        await ctx.send(f'''
-🎩 **Yikes, {ctx.author.mention}!** 🎩
-
-You’re flat broke, kiddo! Can’t make it rain without the dough. 💸  
-Your current balance is **{user_balance} coins** :moneybag:.  
-
-*"Better get back to work, champ—those coins won’t earn themselves!"* 😅
-        ''')
+        await ctx.send(user_can_not_pay(ctx.author.mention, user_balance))
         return
 
     coin_faces = ["heads", "tails"]
@@ -28,19 +21,7 @@ Your current balance is **{user_balance} coins** :moneybag:.
 
     if side == chosen_face:
         flip_reward(user_id, value, is_winner=True)
-        await ctx.send(f'''
-🎉 **Hot diggity dog, {ctx.author.mention}!** 🎉
-
-You hit the jackpot! 🎰  
-**{value} coins** are now yours to keep! :money_mouth:  
-
-*"Keep throwing those coin, big shot—you’re on a winning streak!"* 🤑
-        ''')
+        await ctx.send(flip_reward_message(ctx.author.mention, value))
     else:
         flip_reward(user_id, value, is_winner=False)
-        await ctx.send(f'''
-💔 **Oh no, {ctx.author.mention}!** 💔
-
-The house always wins, kiddo. 🎰  
-**{value} coins** just flew outta your pocket! :money_with_wings:  
-        ''')
+        await ctx.send(flip_loss_message(ctx.author.mention, value))
