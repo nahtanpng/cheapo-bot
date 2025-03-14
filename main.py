@@ -43,7 +43,7 @@ async def change_bot_statuses():
 @bot.event
 async def on_ready():
     async with aiohttp.ClientSession() as session:
-        async with session.get("https://media.discordapp.net/attachments/1350148775196233759/1350148879034744904/cheapo.png?ex=67d5afa1&is=67d45e21&hm=2106493561e93b006c81f6a888274e35613e00a38b8b7cd4735e918f3849bdc1&=&format=webp&quality=lossless&width=704&height=704") as response:
+        async with session.get("https://cdn.discordapp.com/attachments/1350148775196233759/1350165015411429508/bot_icon_1.png?ex=67d5bea8&is=67d46d28&hm=b033124e3bdbbf5d3bd41d98eb876b205a2dc23db215603e630ce11ea1e3eb57&") as response:
             if response.status == 200:
                 img = await response.read()
                 await bot.user.edit(avatar=img)
@@ -53,7 +53,7 @@ async def on_ready():
 
     async with aiohttp.ClientSession() as session:
         async with session.get(
-                "https://media.discordapp.net/attachments/1350148775196233759/1350148879957626922/banner.png?ex=67d5afa1&is=67d45e21&hm=fc9ff4d92d0039b743222e8456fa622e6af5c4a59f33ec59ff8d3ffa145f969c&=&format=webp&quality=lossless&width=748&height=264") as response:
+                "https://cdn.discordapp.com/attachments/1350148775196233759/1350164631766962186/Teste_3.png?ex=67d5be4d&is=67d46ccd&hm=dbe0e69324ca6adb05495dd52ce32956268e436f409d564475a8a785b9a269eb&") as response:
             if response.status == 200:
                 img = await response.read()
                 await bot.user.edit(banner=img)
