@@ -1,6 +1,6 @@
 from discord.ext import commands
 
-from .balance import balance_command, balance_slash, daily, daily_slash, pay_command
+from .balance_commands_impl import balance_command, balance_slash, daily, daily_slash, pay_command
 from .gambling import flip
 
 
