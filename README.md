@@ -80,6 +80,8 @@ pip install -r requirements.txt
   python main.py
   ```
 
+### **For more Information check [Discord Setup Guide](documentation/discord_setup.md)**
+
 ---
 
 ## **Contributing** 🤝  
