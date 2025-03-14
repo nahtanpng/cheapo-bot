@@ -60,12 +60,12 @@ Make sure you have the following installed:
 - Python 3.8 or higher  
 - `discord.py` library
 - `python-dotenv` library
+- `aiohttp` library
 - SQLite (built into Python)  
 
 Run the following command to install dependencies:  
 ```bash
-pip install discord.py
-pip install python-dotenv
+pip install -r requirements.txt
 ```
 
 ### **3. Configure the Bot**  
