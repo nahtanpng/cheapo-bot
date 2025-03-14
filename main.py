@@ -2,6 +2,7 @@ import os
 import sqlite3
 from itertools import cycle
 
+import aiohttp
 import discord
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
