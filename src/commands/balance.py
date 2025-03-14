@@ -4,9 +4,10 @@ from datetime import datetime, timedelta
 import discord
 from discord.ext import commands
 
-from src.db.balance import update_balance, get_last_daily, set_last_daily
+from src.db.balance import update_balance, get_last_daily, set_last_daily, verify_balance, pay
 from src.messages.en.balance_messages import balance_embed_message, balance_embed_empty_message, daily_reward_message, \
     daily_not_reward_message
+from src.messages.en.gambling_messages import user_can_not_pay
 
 
 # Command: Check current balance
@@ -67,7 +68,7 @@ async def daily_slash(interact: discord.Interaction):
     await interact.message.add_reaction("🎉")
 
 
-async def daily(ctx):
+async def daily(ctx: commands.Context):
     user_id = ctx.author.id
     reward = 100
 
@@ -87,3 +88,20 @@ async def daily(ctx):
     embed = daily_reward_message(ctx.author.mention, reward)
     await ctx.send(embed=embed)
     await ctx.message.add_reaction("🎉")
+
+
+# Commands: pay
+async def pay_command(ctx: commands.Context, receiver: discord.Member, value: int):
+    sender_id = ctx.author.id
+
+    user_can_pay, user_balance = verify_balance(sender_id, value)
+
+    if not user_can_pay:
+        await ctx.send(user_can_not_pay(ctx.author.mention, user_balance))
+        return
+
+    receiver_id = receiver.id
+
+    pay(sender_id, receiver_id, value)
+
+    await ctx.send(f"{ctx.author.mention} successfully paid {receiver.mention} **{value} coins**! 💸")

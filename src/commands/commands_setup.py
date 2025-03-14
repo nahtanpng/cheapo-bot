@@ -1,6 +1,6 @@
 from discord.ext import commands
 
-from .balance import balance_command, balance_slash, daily, daily_slash
+from .balance import balance_command, balance_slash, daily, daily_slash, pay_command
 from .gambling import flip
 
 
@@ -10,3 +10,4 @@ def commands_setup(bot: commands.Bot):
     bot.tree.command(name="daily", description="Reward your daily reward!")(daily_slash)
     bot.command()(daily)
     bot.command()(flip)
+    bot.command(name="pay")(pay_command)
