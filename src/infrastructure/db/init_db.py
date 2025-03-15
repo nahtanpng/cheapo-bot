@@ -1,20 +1,7 @@
-from abc import ABC, abstractmethod
 from sqlite3 import Connection, connect
 
-from src.db.tables import balance_table, credential_table
-
-class DatabaseInterface(ABC):
-    @abstractmethod
-    def init_db(self) -> None:
-        pass
-
-    @abstractmethod
-    def close_conn(self) -> None:
-        pass
-
-    @abstractmethod
-    def init_tables(self) -> None:
-        pass
+from src.domain.repositories.database_repository import DatabaseInterface
+from src.infrastructure.db.tables import balance_table, credential_table
 
 
 class Database(DatabaseInterface):

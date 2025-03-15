@@ -1,6 +1,4 @@
-import sqlite3
-
-from src.db.init_db import Database
+from src.infrastructure.db.init_db import Database
 
 
 class BalanceRepository:

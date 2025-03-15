@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 import discord
 from discord.ext import commands
 
-from src.db.balance_repository_impl import update_balance, get_last_daily, set_last_daily, verify_balance, pay, get_balance
-from src.messages.en.balance_messages import balance_embed_message, balance_embed_empty_message, daily_reward_message, \
+from src.infrastructure.db.balance_repository_impl import update_balance, get_last_daily, set_last_daily, verify_balance, pay, get_balance
+from src.presentation.messages.en.balance_messages import balance_embed_message, daily_reward_message, \
     daily_not_reward_message
-from src.messages.en.gambling_messages import user_can_not_pay
+from src.presentation.messages.en.gambling_messages import user_can_not_pay
 
 class BalanceCommands:
     def __init__(self, balance_repository):

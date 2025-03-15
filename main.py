@@ -1,14 +1,12 @@
 import os
-import sqlite3
 from itertools import cycle
 
-import aiohttp
 import discord
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 
-from src.commands.help_command import CustomHelpCommand
-from src.db.init_db import Database
+from src.presentation.commands.help_command import CustomHelpCommand
+from src.infrastructure.db.init_db import Database
 
 # Setting .env variables
 load_dotenv()
@@ -58,12 +56,12 @@ async def on_ready():
 
 
 # Commands
-from src.commands.commands_setup import commands_setup
+from src.presentation.commands import commands_setup
 
 commands_setup(bot)
 
 # Events
-from src.events.events_setup import events_setup
+from src.presentation.events.events_setup import events_setup
 
 events_setup(bot)
 

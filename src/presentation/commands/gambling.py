@@ -2,9 +2,9 @@ import random
 
 from discord.ext import commands
 
-from src.db.balance_repository_impl import verify_balance
-from src.db.gambling import flip_reward
-from src.messages.en.gambling_messages import user_can_not_pay, flip_reward_message, flip_loss_message
+from src.infrastructure.db.balance_repository_impl import verify_balance
+from src.infrastructure.db.gambling import flip_reward
+from src.presentation.messages.en.gambling_messages import user_can_not_pay, flip_reward_message, flip_loss_message
 
 
 async def flip(ctx: commands.Context, side: str, value: int):
