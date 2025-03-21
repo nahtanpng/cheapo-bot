@@ -5,8 +5,15 @@ import discord
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 
-from src.presentation.commands.help_command import CustomHelpCommand
+from src.application.use_cases.balance import BalanceUseCase
+from src.application.use_cases.transfer_coins import TransferCoinsUseCase
+from src.domain.services.balance_service import BalanceService
+from src.domain.services.payment_service import PaymentService
+from src.infrastructure.db.balance_repository_impl import BalanceRepositoryImpl
 from src.infrastructure.db.init_db import Database
+from src.presentation.commands.balance.get_balance import BalanceCommands
+from src.presentation.commands.help_command import CustomHelpCommand
+from src.presentation.commands.pay_command import PayCommand
 
 # Setting .env variables
 load_dotenv()
@@ -18,6 +25,12 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="c!", intents=intents, help_command=CustomHelpCommand())
 
 db = Database()
+db.init_db()
+balance_repository = BalanceRepositoryImpl(db.conn)
+payment_service = PaymentService(balance_repository)
+balance_service = BalanceService(balance_repository)
+balance_use_case = BalanceUseCase(balance_service)
+transfer_coins_use_case = TransferCoinsUseCase(payment_service)
 
 bot_statuses = cycle(["Use c!help 🎲", "You're up 🃏", "How about a game? 🎲"])
 
@@ -52,17 +65,9 @@ async def on_ready():
     change_bot_statuses.start()
     await bot.change_presence(activity=discord.CustomActivity("Use c!help 🎲"))
     print(f'Logged in as {bot.user.name}')
-    db.init_db()
 
+    await bot.add_cog(PayCommand(transfer_coins_use_case))
+    await bot.add_cog(BalanceCommands(balance_use_case))
 
-# Commands
-from src.presentation.commands import commands_setup
-
-commands_setup(bot)
-
-# Events
-from src.presentation.events.events_setup import events_setup
-
-events_setup(bot)
 
 bot.run(TOKEN)
