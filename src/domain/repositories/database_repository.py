@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 
 
-class DatabaseInterface(ABC):
+class DatabaseRepository(ABC):
     @abstractmethod
     def init_db(self) -> None:
         pass
