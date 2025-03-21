@@ -47,9 +47,9 @@ async def on_ready():
             if response.status == 200:
                 img = await response.read()
                 await bot.user.edit(avatar=img)
-                print("Avatar uploaded!")
+                print("✅ Avatar uploaded!")
             else:
-                print(f"Failed to fetch image: HTTP {response.status}")
+                print(f"❌ Failed to fetch image: HTTP {response.status}")
 
     async with aiohttp.ClientSession() as session:
         async with session.get(
@@ -57,14 +57,13 @@ async def on_ready():
             if response.status == 200:
                 img = await response.read()
                 await bot.user.edit(banner=img)
-                print("Banner uploaded!")
+                print("✅ Banner uploaded!")
             else:
-                print(f"Failed to fetch image: HTTP {response.status}")
+                print(f"❌ Failed to fetch image: HTTP {response.status}")
 
     await bot.tree.sync()
     change_bot_statuses.start()
-    await bot.change_presence(activity=discord.CustomActivity("Use c!help 🎲"))
-    print(f'Logged in as {bot.user.name}')
+    print(f'✅ Logged in as {bot.user.name}')
     init_db()
 
 
