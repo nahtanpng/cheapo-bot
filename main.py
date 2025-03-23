@@ -6,15 +6,19 @@ from discord.ext import commands, tasks
 from dotenv import load_dotenv
 
 from src.application.use_cases.balance import BalanceUseCase
+from src.application.use_cases.gambling import GamblingUseCase
 from src.application.use_cases.transfer_coins import TransferCoinsUseCase
 from src.domain.services.balance_service import BalanceService
+from src.domain.services.gambling_service import GamblingService
 from src.domain.services.payment_service import PaymentService
 from src.infrastructure.db.balance_repository_impl import BalanceRepositoryImpl
+from src.infrastructure.db.gambling_repository_impl import GamblingRepositoryImpl
 from src.infrastructure.db.init_db import Database
 from src.infrastructure.db.user_repository_impl import UserRepositoryImpl
 from src.presentation.commands.balance.balance_commands import BalanceCommands
+from src.presentation.commands.gambling.gambling_commands import GamblingCommands
 from src.presentation.commands.help_command import CustomHelpCommand
-from src.presentation.commands.pay_command import PayCommand
+from src.presentation.commands.balance.pay_command import PayCommand
 
 # Setting .env variables
 load_dotenv()
@@ -24,17 +28,25 @@ TOKEN = os.getenv('TOKEN')
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="c!", intents=intents, help_command=CustomHelpCommand())
+bot_statuses = cycle(["Use c!help 🎲", "You're up 🃏", "How about a game? 🎲"])
 
 db = Database()
 db.init_db()
+
+# Initialize repositories
 balance_repository = BalanceRepositoryImpl(db.conn)
 user_repository = UserRepositoryImpl(db.conn)
+gambling_repository = GamblingRepositoryImpl(db.conn)
+
+# Initialize services
 payment_service = PaymentService(balance_repository)
 balance_service = BalanceService(balance_repository, user_repository)
+gambling_service = GamblingService(balance_repository, gambling_repository)
+
+# Initialize use cases
 balance_use_case = BalanceUseCase(balance_service)
 transfer_coins_use_case = TransferCoinsUseCase(payment_service)
-
-bot_statuses = cycle(["Use c!help 🎲", "You're up 🃏", "How about a game? 🎲"])
+gambling_use_case = GamblingUseCase(gambling_service)
 
 
 @tasks.loop(seconds=5)
@@ -70,6 +82,7 @@ async def on_ready():
 
     await bot.add_cog(PayCommand(transfer_coins_use_case))
     await bot.add_cog(BalanceCommands(balance_use_case))
+    await bot.add_cog(GamblingCommands(gambling_use_case))
 
 
 bot.run(TOKEN)
