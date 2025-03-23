@@ -14,3 +14,7 @@ class BalanceRepository(ABC):
     @abstractmethod
     def save(self, balance: Balance):
         pass
+
+    @abstractmethod
+    def update_balance(self, user_id: int, amount: int):
+        pass

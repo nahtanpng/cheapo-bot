@@ -53,3 +53,11 @@ class BalanceRepositoryImpl(BalanceRepository):
             ''', (balance.user_id, balance.amount))
 
         self.conn.commit()
+
+    def update_balance(self, user_id: int, amount: int):
+        c = self.conn.cursor()
+        c.execute('INSERT OR IGNORE INTO credential (id) VALUES (?)', (user_id,))
+        c.execute('INSERT OR IGNORE INTO balance (amount, user_id) VALUES (?, ?)', (0, user_id,))
+
+        c.execute('UPDATE balance SET amount = amount + ? WHERE user_id = ?', (amount, user_id))
+        self.conn.commit()

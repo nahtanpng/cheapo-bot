@@ -11,6 +11,7 @@ from src.domain.services.balance_service import BalanceService
 from src.domain.services.payment_service import PaymentService
 from src.infrastructure.db.balance_repository_impl import BalanceRepositoryImpl
 from src.infrastructure.db.init_db import Database
+from src.infrastructure.db.user_repository_impl import UserRepositoryImpl
 from src.presentation.commands.balance.balance_commands import BalanceCommands
 from src.presentation.commands.help_command import CustomHelpCommand
 from src.presentation.commands.pay_command import PayCommand
@@ -27,8 +28,9 @@ bot = commands.Bot(command_prefix="c!", intents=intents, help_command=CustomHelp
 db = Database()
 db.init_db()
 balance_repository = BalanceRepositoryImpl(db.conn)
+user_repository = UserRepositoryImpl(db.conn)
 payment_service = PaymentService(balance_repository)
-balance_service = BalanceService(balance_repository)
+balance_service = BalanceService(balance_repository, user_repository)
 balance_use_case = BalanceUseCase(balance_service)
 transfer_coins_use_case = TransferCoinsUseCase(payment_service)
 

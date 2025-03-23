@@ -7,3 +7,6 @@ class BalanceUseCase:
 
     def get_amount(self, user_id: int):
         return self.balance_service.get_amount(user_id)
+
+    def get_daily(self, user_id: int):
+        return self.balance_service.get_daily(user_id)
