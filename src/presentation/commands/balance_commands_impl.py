@@ -3,12 +3,12 @@ from datetime import datetime, timedelta
 import discord
 from discord.ext import commands
 
-from src.infrastructure.db.balance_repository_impl import update_balance, get_last_daily, set_last_daily, verify_balance, pay, get_balance
+from src.infrastructure.db.balance import update_balance, get_last_daily, set_last_daily, verify_balance, pay, get_balance
 from src.presentation.messages.en.balance_messages import balance_embed_message, daily_reward_message, \
     daily_not_reward_message
 from src.presentation.messages.en.gambling_messages import user_can_not_pay
 
-class BalanceCommands:
+class a:
     def __init__(self, balance_repository):
 # Command: Check current balance
 async def balance_slash(interact: discord.Interaction):

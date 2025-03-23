@@ -11,7 +11,7 @@ from src.domain.services.balance_service import BalanceService
 from src.domain.services.payment_service import PaymentService
 from src.infrastructure.db.balance_repository_impl import BalanceRepositoryImpl
 from src.infrastructure.db.init_db import Database
-from src.presentation.commands.balance.get_balance import BalanceCommands
+from src.presentation.commands.balance.balance_commands import BalanceCommands
 from src.presentation.commands.help_command import CustomHelpCommand
 from src.presentation.commands.pay_command import PayCommand
 
