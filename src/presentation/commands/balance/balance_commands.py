@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 
 from src.application.use_cases.balance import BalanceUseCase

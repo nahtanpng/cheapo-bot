@@ -13,7 +13,7 @@ class BalanceRepositoryImpl(BalanceRepository):
 
         self.conn.commit()
 
-        c.execute('SELECT amount FROM balance WHERE user_id = ?', (user_id,))
+        c.execute('SELECT * FROM balance WHERE user_id = ?', (user_id,))
         result = c.fetchone()
 
         if result:
