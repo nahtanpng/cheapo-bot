@@ -78,7 +78,30 @@ async def on_ready():
     await bot.tree.sync()
     change_bot_statuses.start()
     await bot.change_presence(activity=discord.CustomActivity("Use c!help 🎲"))
-    print(f'Logged in as {bot.user.name}')
+    
+    def print_welcome_message():
+        gold = "\033[38;2;255;189;48m"
+        yellow = "\033[33;1m"
+        reset = "\033[0m"
+
+        welcome_message = f"""
+        
+        {gold}╔══════════════════════════════════════════════════════════════════╗
+        ║                                                  @               ║
+        ║    @	 @@@@@@       @                                        @   ║
+        ║      	@@       @@       @@@@@@   @@@@@@    @@@@@@    @@@@        ║
+        ║       @@       @@        @@     @@    @@  @@    @@  @@  @@       ║
+        ║       @@       @@@@@@    @@@@   @@    @@  @@    @@  @@  @@       ║
+        ║       @@       @@   @@   @@     @@@@@@@@  @@@@@@@   @@  @@       ║
+        ║ @      @@@@@@	 @@   @@  @@@@@@  @@    @@  @@	       @@@@        ║
+        ║                                                               @  ║
+        ╚══════════════════════════════════════════════════════════════════╝
+                               Welcome to Cheapo Bot!
+        """
+
+        print(welcome_message)
+
+    print_welcome_message()
 
     await bot.add_cog(PayCommand(transfer_coins_use_case))
     await bot.add_cog(BalanceCommands(balance_use_case))
