@@ -4,7 +4,7 @@ import discord
 def balance_embed_message(user_mention: str, result):
     embed = discord.Embed(
         title="💰 Your Balance 💰",
-        description=f"**{user_mention}, you’ve got a shiny pile of {result[0]} coins!** :coin:",
+        description=f"**{user_mention}, you’ve got a shiny pile of {result} coins!** :coin:",
         color=0xFFD700
     )
     embed.set_footer(text="Keep stackin’ that dough, big shot—you’re on a roll! 🤑")
