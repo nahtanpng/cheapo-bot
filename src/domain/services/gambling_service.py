@@ -13,14 +13,14 @@ class GamblingService:
         user_balance = self.balance_repository.find_by_user_id(user_id)
 
         if user_balance.amount < amount:
-            raise ValueError("Insufficient Balance")
+            raise ValueError(user_balance.amount)
 
         coin_faces = ["heads", "tails"]
         chosen_face = random.choice(coin_faces)
 
         if side == chosen_face:
             self.gambling_repository.flip_reward(user_id, amount, is_winner=True)
-            return True
+            return True, chosen_face
         else:
             self.gambling_repository.flip_reward(user_id, amount, is_winner=False)
-            return False
+            return False, chosen_face
