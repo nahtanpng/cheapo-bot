@@ -1,10 +1,11 @@
 import discord
 
+COIN = "<:coin:1354468542287839344>"
 
-def balance_embed_message(user_mention: str, result):
+def balance_embed_message(user_mention: str, result: int):
     embed = discord.Embed(
         title="💰 Your Balance 💰",
-        description=f"**{user_mention}, you’ve got a shiny pile of {result} coins!** :coin:",
+        description=f"**{user_mention}, you’ve got a shiny pile of {result} coins!** {COIN}",
         color=0xFFD700
     )
     embed.set_footer(text="Keep stackin’ that dough, big shot—you’re on a roll! 🤑")
@@ -14,7 +15,7 @@ def balance_embed_message(user_mention: str, result):
 def balance_embed_empty_message(user_mention: str):
     embed = discord.Embed(
         title="💔 Your Balance 💔",
-        description=f"**{user_mention}, your pockets are empty... 0 coins to your name!** :coin:",
+        description=f"**{user_mention}, your pockets are empty... 0 coins to your name!** {COIN}",
         color=0xFF0000
     )
     embed.set_footer(text="Time to get to work, kiddo—those coins won’t earn themselves! 😅")
