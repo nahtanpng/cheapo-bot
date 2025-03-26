@@ -2,6 +2,18 @@ import discord
 
 COIN = "<:coin:1354468542287839344>"
 
+def payment_success_embed(sender: str, receiver: str, amount: int) -> discord.Embed:
+    embed = discord.Embed(
+        color=0x2ECC71,  # Green for success
+        title="💰 Payment Processed! 💰",
+        description=(
+            f"**{sender}** just sent a payment to **{receiver}**\n\n"
+            f"**Amount Transferred:** {'💸' * min(3, amount//100)} **{amount} coins** {'💸' * min(3, amount//100)}\n\n"
+            f"*\"Money makes the world go 'round!\"*"
+        ),
+    )
+    return embed
+
 def balance_embed_message(user_mention: str, result: int):
     embed = discord.Embed(
         title="💰 Your Balance 💰",

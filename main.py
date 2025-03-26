@@ -16,9 +16,9 @@ from src.infrastructure.db.gambling_repository_impl import GamblingRepositoryImp
 from src.infrastructure.db.init_db import Database
 from src.infrastructure.db.user_repository_impl import UserRepositoryImpl
 from src.presentation.commands.balance.balance_commands import BalanceCommands
+from src.presentation.commands.balance.pay_command import PayCommand
 from src.presentation.commands.gambling.gambling_commands import GamblingCommands
 from src.presentation.commands.help_command import CustomHelpCommand
-from src.presentation.commands.balance.pay_command import PayCommand
 
 # Setting .env variables
 load_dotenv()
@@ -78,7 +78,7 @@ async def on_ready():
     await bot.tree.sync()
     change_bot_statuses.start()
     await bot.change_presence(activity=discord.CustomActivity("Use c!help 🎲"))
-    
+
     def print_welcome_message():
         gold = "\033[38;2;255;189;48m"
         yellow = "\033[33;1m"
@@ -106,6 +106,6 @@ async def on_ready():
     await bot.add_cog(PayCommand(transfer_coins_use_case))
     await bot.add_cog(BalanceCommands(balance_use_case))
     await bot.add_cog(GamblingCommands(gambling_use_case))
- 
+
 
 bot.run(TOKEN)
