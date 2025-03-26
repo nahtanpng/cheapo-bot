@@ -106,6 +106,6 @@ async def on_ready():
     await bot.add_cog(PayCommand(transfer_coins_use_case))
     await bot.add_cog(BalanceCommands(balance_use_case))
     await bot.add_cog(GamblingCommands(gambling_use_case))
-
+ 
 
 bot.run(TOKEN)
