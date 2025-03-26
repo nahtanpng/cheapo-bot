@@ -1,4 +1,3 @@
-from src.domain.services.balance_service import BalanceService
 from src.domain.services.gambling_service import GamblingService
 
 
