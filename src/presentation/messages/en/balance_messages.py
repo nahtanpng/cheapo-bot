@@ -50,3 +50,21 @@ def daily_not_reward_message(user_mention: str):
         color=0xFFA500
     )
     return embed
+
+
+def create_error_embed(title: str, description: str, fields: list = None,
+                       footer: str = None, color: int = 0xFF0000) -> discord.Embed:
+    embed = discord.Embed(
+        title=title,
+        description=description,
+        color=color
+    )
+
+    if fields:
+        for name, value, inline in fields:
+            embed.add_field(name=name, value=value, inline=inline)
+
+    if footer:
+        embed.set_footer(text=footer)
+
+    return embed
