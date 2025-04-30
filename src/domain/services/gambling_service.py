@@ -12,6 +12,9 @@ class GamblingService:
     def flip(self, user_id: int, side: str, amount: int):
         user_balance = self.balance_repository.find_by_user_id(user_id)
 
+        if amount == 0:
+            raise ValueError(user_balance.amount)
+
         if user_balance.amount < amount:
             raise ValueError(user_balance.amount)
 
