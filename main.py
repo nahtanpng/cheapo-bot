@@ -1,4 +1,3 @@
-# main.py
 import asyncio
 import os
 
@@ -14,7 +13,7 @@ from src.domain.services.gambling_service import GamblingService
 from src.domain.services.payment_service import PaymentService
 from src.infrastructure.db.balance_repository_impl import BalanceRepositoryImpl
 from src.infrastructure.db.gambling_repository_impl import GamblingRepositoryImpl
-# Import your repositories and services
+
 from src.infrastructure.db.init_db import Database
 from src.infrastructure.db.user_repository_impl import UserRepositoryImpl
 from src.presentation.commands.balance.balance_commands import BalanceCommands
@@ -113,17 +112,14 @@ async def setup_bot():
             print(f"Error syncing commands: {e}")
 
 
-# Run the bot
 async def main():
     try:
         async with bot:
             await setup_bot()
             await bot.start(TOKEN)
     finally:
-        # Clean up resources if needed
         print("Bot has shut down.")
 
 
-# Run the main function
 if __name__ == "__main__":
     asyncio.run(main())
