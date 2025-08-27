@@ -47,4 +47,4 @@ ENV PYTHONUNBUFFERED=1 \
 
 
 # Run the bot
-CMD ["python", "-m", "main.py"]
+CMD ["python", "-m", "main"]
